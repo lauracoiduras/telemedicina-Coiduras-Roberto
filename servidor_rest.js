@@ -1,12 +1,16 @@
-var conexion = require("./conexion_mysql.js"); //conexion con base de datos mySQL
-
 var express = require("express"); //instacia de la libreria (funcion) a usar => servidor.
 var app = express();
 
+// 1. Importar el cliente de Supabase
+const { createClient } = require("@supabase/supabase-js");
+
+// 2. Configurar con tu URL y tu Public Key (anon key)
+const supabaseUrl = 'https://zdpqividvnudomwsguwc.supabase.co';
+const supabaseKey = 'sb_publishable_7FYSxX26z-2Kw0ZUjYZk7w_YTduA0XZ'; // <-- Pega aquí tu public key
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 var jwt = require("jwt-simple");
 var clave = "miSecretoMasOscuro";
-
-
 
 
 app.use("/apiGestor", express.static("cliente_rest"));
