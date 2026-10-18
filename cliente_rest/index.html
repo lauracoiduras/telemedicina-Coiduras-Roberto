@@ -1,0 +1,394 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf8">
+    <title>Gestor
+    </title>
+    <style>
+       
+/* PANTALLAS */
+.seccion {
+    display: none;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.seccion.activa {
+    display: block;
+}
+
+/* GENERAL */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fa;
+    margin: 0;
+    padding: 25px;
+    color: #344054;
+}
+
+h1 {
+    text-align: center;
+    color: #345875;
+    margin-bottom: 25px;
+}
+
+h2 {
+    color: #345875;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+h3 {
+    color: #48647b;
+    margin-top: 25px;
+    margin-bottom: 12px;
+}
+
+/* FORMULARIOS */
+input, select {
+    padding: 9px 11px;
+    min-width: 180px;
+    border: 1px solid #d3dce5;
+    border-radius: 6px;
+    background: white;
+    color: #344054;
+    box-sizing: border-box;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #7daac9;
+    box-shadow: 0 0 0 2px rgba(125,170,201,0.12);
+}
+
+/* ESPACIOS ENTRE CAMPOS */
+#login > div,
+#registroModificacion > div,
+#inicio > div:not(.cabeceraInicio) {
+    margin-bottom: 12px;
+}
+
+/* BOTONES */
+button {
+    background: #65947a;
+    color: white;
+    border: none;
+    padding: 9px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    margin: 6px 6px 6px 0;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #4d7d62;
+}
+
+button:active {
+    background: #3e684f;
+}
+
+/* TABLAS */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin-top: 12px;
+    margin-bottom: 22px;
+    font-size: 14px;
+}
+
+th {
+    background: #729b80;
+    color: white;
+    text-align: left;
+    padding: 12px;
+    font-weight: 600;
+}
+
+td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e5e9ee;
+}
+
+tbody tr:hover {
+    box-shadow: inset 0 0 0 9999px rgba(70,120,160,0.05);
+}
+
+/* ESTADOS DE LAS RESERVAS */
+/* Conservamos los colores según el estado */
+
+.reserva-finalizada {
+    background: white;
+}
+
+.reserva-en-uso-ok {
+    background: #d6e9fa;
+}
+
+.reserva-en-uso-tarde {
+    background: #f9d6d6;
+}
+
+.reserva-pendiente {
+    background: #d8f1dc;
+}
+
+/* FIELDSET */
+fieldset {
+    border: 1px solid #dce4eb;
+    border-radius: 8px;
+    padding: 18px;
+    background: #fafbfd;
+}
+
+fieldset > div {
+    margin: 10px 0;
+}
+
+legend {
+    font-weight: bold;
+    color: #345875;
+    padding: 0 8px;
+}
+
+label {
+    display: inline-block;
+    width: 100px;
+}
+
+/* CABECERA DE INICIO */
+.cabeceraInicio {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+#textoBienvenida {
+    font-weight: 600;
+    color: #48647b;
+}
+
+/* RANKING MINISTERIO */
+#tablaRanking tr:nth-child(even) {
+    background: #f5f8fb;
+}
+
+#tablaRanking td:first-child {
+    font-weight: bold;
+    color: #48647b;
+}
+
+#tablaRanking td:last-child {
+    font-weight: 600;
+}
+
+
+    </style>
+    
+</head>
+
+
+<body>
+
+    <h1>Aplicación Gestor</h1>
+
+    <!--=======================================
+    PANTALLA-- LOGIN (A)
+    ========================================*/--> 
+    <div id="login" class="seccion activa">
+        <h2>Acesso</h2>
+       <div>Usuario: <input id="usuarioLogin" /></div> 
+       <div>Contraseña: <input id="passwordLogin" type="password"/></div>
+       <button onclick="entrar()">Entrar</button> 
+       <button onclick="registro()">Registro</button>
+    </div>
+
+    <!--=======================================
+    PANTALLA-- REGISTRO/MODIFICACIÓN DE DATOS (B)
+    ========================================*/--> 
+    <div id="registroModificacion" class="seccion">
+        <h2>Datos gestor</h2>
+       <div>Nombre: <input id="nombreRegistro" /></div> 
+       <div>Apellidos: <input id="apellidosRegistro" /></div> 
+       <div>Login: <input id="usuarioRegistro" /></div> 
+       <div>Contraseña: <input id="passwordRegistro" type="password"/></div>
+       <button onclick="guardar()">Guardar</button> 
+       <button onclick="cancelar()">Cancelar</button> 
+    </div>
+
+    <!--=======================================
+    PANTALLA-- INICIO (C)
+    ========================================*/--> 
+    <div id="inicio" class="seccion">
+        <h2>Inicio</h2>
+        <div class="cabeceraInicio">
+          <p id="textoBienvenida"></p>
+          <button onclick="editarDatos()">Editar datos</button>
+        </div>
+        <h3>Búsqueda de recursos</h3>
+        
+        <div>
+        Categoría:
+        <select id="filtroCategoria" onchange="categoriaCambiada()"></select>
+        </div>
+
+        <div>
+        Modelo:
+        <select id="filtroModelo"></select>
+        </div>
+
+        <div>
+        Ubicación:
+        <select id="filtroUbicacion"></select>
+        </div>
+
+        <div>
+        Estado:
+        <select id="filtroEstado"></select>
+        </div>
+
+        <button onclick="buscar()">Buscar</button>
+
+        <h3>Recursos</h3>
+        <table border="1">
+        <thead>
+            <tr>
+            <th>N. Serie</th>
+            <th>Categoría</th>
+            <th>Modelo</th>
+            <th>Ubicación</th>
+            <th>Estado</th>
+            <th>Abrir</th>
+            <th>X</th>
+            </tr>
+        </thead>
+        <tbody id="tablaRecursos">
+            <!-- empieza vacío-->
+        </tbody>
+        </table>
+
+        <h3>Avisos</h3>
+        <table border="1">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Origen</th>
+              <th>Texto</th>
+            </tr>
+          </thead>
+          <tbody id="tablaAvisos"></tbody>
+        </table>
+
+        <button onclick="anadirRecurso()">Añadir Recurso</button>
+        <button onclick="salir()"> Salir </button>
+
+
+        <h2>Ministerio de Sanidad</h2>
+
+        <button onclick="enviarReservasMinisterio()">
+            Enviar reservas al Ministerio
+        </button>
+
+        <h2>Ranking de reservas por área médica</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Posición</th>
+                    <th>Área médica</th>
+                    <th>Número de reservas</th>
+                </tr>
+            </thead>
+
+            <tbody id="tablaRanking">
+            </tbody>
+        </table>
+    </div>
+
+    <!--=======================================
+    PANTALLA-- RECURSO (D)
+    ========================================*/--> 
+
+ <div id="recurso" class="seccion">
+  <h2>Recurso</h2>
+  <button onclick="volverAlListado('inicio')">Volver al listado</button>
+  <button onclick="salir()">Salir</button>
+
+  <fieldset style="max-width:520px;">
+    <legend>Datos recurso</legend>
+
+    <div>
+      <label>Categoría:</label>
+      <select id="selectCategoriaRecurso" onchange="categoriaRecursoCambiada()"></select>
+   </div>
+
+
+    <div>
+      <label>Modelo:</label>
+      <select id="selectModeloRecurso"></select>
+    </div>
+
+    <div>
+      <label>Núm. serie:</label>
+      <input id="inputNumeroSerieRecurso" />
+    </div>
+
+    <div>
+      <label>Ubicación:</label>
+      <select id="selectUbicacionRecurso"></select>
+    </div>
+
+    <div>
+      <label>Estado:</label>
+      <select id="selectEstadoRecurso">
+        <option value="0">Operativo</option>
+        <option value="1">Baja/defectuoso</option>
+        <option value="2">Mantenimiento</option>
+      </select>
+    </div>
+
+    <div style="margin-top:10px;">
+      <button onclick="guardarRecurso()">Guardar</button>
+    </div>
+  </fieldset>
+
+  <h3>Reservas</h3>
+  
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Sanitario</th>
+        <th>H. estim.</th>
+        <th>F. Petición</th>
+        <th>F. Inicio</th>
+        <th>F. Fin</th>
+      </tr>
+    </thead>
+    <tbody id="tablaReservasRecurso"></tbody>
+  </table>
+
+  <h3>Reseñas</h3>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Sanitario</th>
+        <th>Valoración</th>
+        <th>Comentario</th>
+      </tr>
+    </thead>
+    <tbody id="tablaResenyasRecurso"></tbody>
+  </table>
+</div>
+
+<script src="rest.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
