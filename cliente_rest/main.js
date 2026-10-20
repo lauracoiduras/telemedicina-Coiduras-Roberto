@@ -1036,7 +1036,7 @@ function enviarReservasMinisterio() {
         .then(function(sanitario) {
 
             // Buscar el recurso correspondiente
-            return fetch("/api/recursos/" + reserva.idRecurso)
+            return fetch("/api/recursos/" + reserva.idrecurso)
             .then(function(response) {
                 if (!response.ok) {
                     throw new Error("Error al obtener recurso");
