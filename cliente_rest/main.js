@@ -1026,7 +1026,7 @@ function enviarReservasMinisterio() {
     // Obtener los datos de cada sanitario
     var peticiones = todasReservas.map(function(reserva) {
 
-        return fetch("/api/sanitarios/" + reserva.idSanitario)
+        return fetch("/api/sanitarios/" + reserva.idsanitario)
         .then(function(response) {
             if (!response.ok) {
                 throw new Error("Error al obtener sanitario");
